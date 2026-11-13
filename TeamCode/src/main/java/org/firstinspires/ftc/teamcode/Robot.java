@@ -1,12 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Robot {
     // Drive motors
     private DcMotorEx frontLeft, frontRight, backLeft, backRight;
+    private CRServo turretAxis;
 
     public Robot() { }
 
@@ -20,12 +23,14 @@ public class Robot {
         frontRight = ahwMap.get(DcMotorEx.class, "front_right_drive");
         backLeft   = ahwMap.get(DcMotorEx.class, "back_left_drive");
         backRight  = ahwMap.get(DcMotorEx.class, "back_right_drive");
+        turretAxis = ahwMap.get(CRServo.class, "servo_turret_axis");
 
         // TODO: change when motors are installed
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.FORWARD);
+        turretAxis.setDirection(CRServo.Direction.FORWARD);
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -43,5 +48,10 @@ public class Robot {
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    }
+
+    public void setPushPower(double turretPwr){
+        turretAxis.setPower(turretPwr);
     }
 }
