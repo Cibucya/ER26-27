@@ -6,7 +6,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Robot {
     // Drive motors
-    private DcMotorEx frontLeft, frontRight, backLeft, backRight;
+    private DcMotorEx frontLeft  = null;
+    private DcMotorEx frontRight = null;
+    private DcMotorEx backLeft   = null;
+    private DcMotorEx backRight  = null;
 
     public Robot() { }
 
