@@ -48,4 +48,30 @@ public class MechanumDrive {
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+
+    void drive(double drive, double strafe, double twist) {
+        double[] speeds = {
+                (drive + strafe + twist),
+                (drive - strafe - twist),
+                (drive - strafe + twist),
+                (drive + strafe - twist)
+        };
+
+        double max = Math.abs(speeds[0]);
+        for (int i = 0; i < speeds.length; ++i) {
+            double speed = Math.abs(speeds[i]);
+            if (max < speed) max = speed;
+        }
+
+        if (max > 1) {
+            for (int i = 0; i < speeds.length; ++i) {
+                speeds[i] /= max;
+            }
+        }
+
+        frontLeft.setPower(speeds[0]);
+        frontRight.setPower(speeds[1]);
+        backLeft.setPower(speeds[2]);
+        backRight.setPower(speeds[3]);
+    }
 }
