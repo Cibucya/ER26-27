@@ -49,6 +49,12 @@ public class MechanumDrive {
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
+    /**
+     * Converts drive, strafe, and twist values to motor outputs
+     * @param drive  front and back
+     * @param strafe left and right
+     * @param twist  rotating the whole chassis
+     */
     void drive(double drive, double strafe, double twist) {
         double[] speeds = {
                 (drive + strafe + twist),
