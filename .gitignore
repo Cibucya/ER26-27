@@ -79,3 +79,7 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+# Remote upload to RB tool
+ftc_http/
+*ftc_http*
