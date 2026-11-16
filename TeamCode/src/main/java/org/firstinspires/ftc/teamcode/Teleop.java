@@ -20,7 +20,11 @@ public class Teleop extends LinearOpMode {
 
             if (gamepad1.a) {
                 turretPwr = 1.0;
-            } else {
+            } else if (gamepad1.b) {
+                turretPwr = -1.0;
+            }
+
+            else {
                 turretPwr = 0.0;
             }
             robot.setPushPower(turretPwr, intakePwr);
