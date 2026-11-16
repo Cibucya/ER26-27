@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Robot {
     // Drive motors
-    private DcMotorEx frontLeft, frontRight, backLeft, backRight;
+    private DcMotorEx frontLeft, frontRight, backLeft, backRight, frontShooter;
     private CRServo turretAxis, intakeLeft, intakeRight;
 
     public Robot() { }
@@ -23,6 +23,7 @@ public class Robot {
         frontRight = ahwMap.get(DcMotorEx.class, "front_right_drive");
         backLeft   = ahwMap.get(DcMotorEx.class, "back_left_drive");
         backRight  = ahwMap.get(DcMotorEx.class, "back_right_drive");
+        frontShooter = ahwMap.get(DcMotorEx.class, "front_shooter_drive");
         turretAxis = ahwMap.get(CRServo.class, "servo_turret_axis");
         intakeLeft = ahwMap.get(CRServo.class, "servo_intake_left");
         intakeRight = ahwMap.get(CRServo.class, "servo_intake_right");
@@ -33,8 +34,9 @@ public class Robot {
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.FORWARD);
+        frontShooter.setDirection(DcMotor.Direction.FORWARD);
         turretAxis.setDirection(CRServo.Direction.FORWARD);
-        intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -56,9 +58,10 @@ public class Robot {
 
     }
 
-    public void setPushPower(double turretPwr, double intakePwr){
+    public void setPushPower(double turretPwr, double intakePwr, double shooterPwr){
         turretAxis.setPower(turretPwr);
         intakeLeft.setPower(intakePwr);
         intakeRight.setPower(intakePwr);
+        frontShooter.setPower(shooterPwr);
     }
 }
