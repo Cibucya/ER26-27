@@ -28,8 +28,8 @@ public class Robot {
         // TODO: change when motors are installed
         frontShooter.setDirection(DcMotor.Direction.FORWARD);
         turretAxis.setDirection(CRServo.Direction.FORWARD);
-        intakeLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeLeft.setDirection(DcMotor.Direction.FORWARD);
+        intakeRight.setDirection(DcMotor.Direction.FORWARD);
     }
 
     /**
