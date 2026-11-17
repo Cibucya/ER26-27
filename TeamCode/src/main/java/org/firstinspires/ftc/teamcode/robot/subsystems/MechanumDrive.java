@@ -12,6 +12,10 @@ public class MechanumDrive {
     private DcMotorEx backLeft   = null;
     private DcMotorEx backRight  = null;
 
+    private double driveInput = 0;
+    private double strafeInput = 0;
+    private double twistInput = 0;
+
     public MechanumDrive() {}
 
     /**
@@ -40,13 +44,23 @@ public class MechanumDrive {
     }
 
     /**
-     * Resets encoders
+     * Sets operator's input
+     * @param drive
+     * @param strafe
+     * @param twist
      */
-    public void reset() {
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    void setDriveInputs(double drive, double strafe, double twist) {
+        this.driveInput = drive;
+        this.strafeInput = strafe;
+        this.twistInput = twist;
+    }
+
+    /**
+     * Called once per control loop iteration
+     * Handles drive-related calculations and updates
+     */
+    void periodic() {
+        this.drive(driveInput, strafeInput, twistInput);
     }
 
     /**
@@ -79,5 +93,15 @@ public class MechanumDrive {
         frontRight.setPower(speeds[1]);
         backLeft.setPower(speeds[2]);
         backRight.setPower(speeds[3]);
+    }
+
+    /**
+     * Resets encoders
+     */
+    public void reset() {
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
