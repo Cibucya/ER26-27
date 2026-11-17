@@ -49,7 +49,7 @@ public class MechanumDrive {
      * @param strafe
      * @param twist
      */
-    void setDriveInputs(double drive, double strafe, double twist) {
+    public void setDriveInputs(double drive, double strafe, double twist) {
         this.driveInput = drive;
         this.strafeInput = strafe;
         this.twistInput = twist;
@@ -59,7 +59,7 @@ public class MechanumDrive {
      * Called once per control loop iteration
      * Handles drive-related calculations and updates
      */
-    void periodic() {
+    public void periodic() {
         this.drive(driveInput, strafeInput, twistInput);
     }
 
