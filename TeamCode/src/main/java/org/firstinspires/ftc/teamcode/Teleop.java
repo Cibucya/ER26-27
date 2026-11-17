@@ -15,19 +15,21 @@ public class Teleop extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            double intakePwr, turretPwr;
+            double intakePwr, turretPwr, shooterPwr;
+            shooterPwr = 0;
+            turretPwr = 0;
+
             intakePwr = 1.0;
 
             if (gamepad1.a) {
                 turretPwr = 1.0;
             } else if (gamepad1.b) {
                 turretPwr = -1.0;
-            }
 
-            else {
-                turretPwr = 0.0;
+            } else if (gamepad1.x) {
+                shooterPwr = 1.0;
             }
-            robot.setPushPower(turretPwr, intakePwr);
+            robot.setPushPower(turretPwr, intakePwr, shooterPwr);
         }
     }
 }
