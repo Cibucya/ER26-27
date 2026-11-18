@@ -13,5 +13,10 @@ public class Shooter {
         shooter = ahwMap.get(DcMotorEx.class, "shooter");
         shooter.setDirection(DcMotor.Direction.FORWARD);
         shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        this.reset();
+    }
+
+    public void reset() {
+        shooter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
