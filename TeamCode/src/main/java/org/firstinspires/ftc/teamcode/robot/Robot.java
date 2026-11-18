@@ -24,4 +24,8 @@ public class Robot {
 
         this.drive.init(hwMap);
     }
+
+    public void periodic() {
+        this.drive.periodic();
+    }
 }
