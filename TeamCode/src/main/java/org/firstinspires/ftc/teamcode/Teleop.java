@@ -11,11 +11,10 @@ public class Teleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-       robot.init(hardwareMap);
+        robot.init(hardwareMap);
         waitForStart();
 
         while (opModeIsActive()) {
-
             double intakePwr, turretPwr, shooterPwr;
             shooterPwr = 0;
             turretPwr = 0;
