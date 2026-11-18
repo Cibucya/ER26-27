@@ -46,6 +46,10 @@ public class Robot {
         this.shooter.init(this.hwMap);
     }
 
+    /**
+     * Called once per control loop iteration
+     * Handles robot behaviour and updates
+     */
     public void periodic() {
         this.drive.periodic();
         this.shooter.periodic();
