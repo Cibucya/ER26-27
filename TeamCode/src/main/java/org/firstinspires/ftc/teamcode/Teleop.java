@@ -30,6 +30,8 @@ public class Teleop extends LinearOpMode {
                 shooterPwr = 1.0;
             }
             robot.setPushPower(turretPwr, intakePwr, shooterPwr);
+
+            robot.periodic();
         }
     }
 }
