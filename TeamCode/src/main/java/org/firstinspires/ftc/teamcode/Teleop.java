@@ -14,6 +14,7 @@ public class Teleop extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
+        // Control loop
         while (opModeIsActive()) {
             double intakePwr, turretPwr, shooterPwr;
             shooterPwr = 0;
