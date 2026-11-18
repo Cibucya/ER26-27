@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Shooter {
-    private DcMotorEx shooter;
+    private DcMotorEx shooter = null;
 
     public Shooter() {}
 
@@ -14,6 +14,10 @@ public class Shooter {
         shooter.setDirection(DcMotor.Direction.FORWARD);
         shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         this.reset();
+    }
+
+    public void setPower(double power) {
+        shooter.setPower(power);
     }
 
     public void reset() {
