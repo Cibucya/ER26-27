@@ -26,6 +26,10 @@ public class Robot {
         this.drive.init(hwMap);
     }
 
+    /**
+     * Called once per control loop iteration
+     * Handles robot behaviour and updates
+     */
     public void periodic() {
         this.drive.periodic();
     }
