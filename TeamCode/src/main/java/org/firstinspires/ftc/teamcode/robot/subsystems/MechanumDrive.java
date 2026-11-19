@@ -23,13 +23,11 @@ public class MechanumDrive {
      * @param ahwMap The HardwareMap from the OpMode.
      */
     public void init(HardwareMap ahwMap) {
-        // TODO: change when motors are installed and driver station is set up
         frontLeft  = ahwMap.get(DcMotorEx.class, "front_left_drive");
         frontRight = ahwMap.get(DcMotorEx.class, "front_right_drive");
         backLeft   = ahwMap.get(DcMotorEx.class, "right_left_drive");
         backRight  = ahwMap.get(DcMotorEx.class, "right_right_drive");
 
-        // TODO: change when motors are installed
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         backLeft.setDirection(DcMotor.Direction.FORWARD);
