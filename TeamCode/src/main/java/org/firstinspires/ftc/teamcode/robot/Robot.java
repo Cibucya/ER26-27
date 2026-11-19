@@ -13,7 +13,6 @@ public class Robot {
     public MechanumDrive drive = null;
     public Shooter shooter = null;
 
-    private DcMotorEx frontShooter;
     private CRServo turretAxis, intakeLeft, intakeRight;
 
 
@@ -55,11 +54,10 @@ public class Robot {
         this.shooter.periodic();
     }
 
-    public void setPushPower(double turretPwr, double intakePwr, double shooterPwr){
+    public void setPushPower(double turretPwr, double intakePwr){
         turretAxis.setPower(turretPwr);
         intakeLeft.setPower(intakePwr);
         intakeRight.setPower(intakePwr);
-        frontShooter.setPower(shooterPwr);
     }
 
 }
