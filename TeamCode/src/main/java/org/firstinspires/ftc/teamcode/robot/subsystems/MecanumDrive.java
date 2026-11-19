@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class MechanumDrive {
+public class MecanumDrive {
     // Drive motors
     private DcMotorEx frontLeft  = null;
     private DcMotorEx frontRight = null;
@@ -16,7 +16,7 @@ public class MechanumDrive {
     private double strafeInput = 0;
     private double twistInput = 0;
 
-    public MechanumDrive() {}
+    public MecanumDrive() {}
 
     /**
      * Initializes the base motors.

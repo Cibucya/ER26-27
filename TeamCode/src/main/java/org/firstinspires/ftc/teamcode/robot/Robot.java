@@ -2,15 +2,14 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.robot.subsystems.MechanumDrive;
+import org.firstinspires.ftc.teamcode.robot.subsystems.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Shooter;
 
 public class Robot {
     private HardwareMap hwMap = null;
-    public MechanumDrive drive = null;
+    public MecanumDrive drive = null;
     public Shooter shooter = null;
 
     private CRServo turretAxis, intakeLeft, intakeRight;
@@ -38,7 +37,7 @@ public class Robot {
 
         this.hwMap = ahwMap;
 
-        this.drive = new MechanumDrive();
+        this.drive = new MecanumDrive();
         this.shooter = new Shooter();
 
         this.drive.init(this.hwMap);

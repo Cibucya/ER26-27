@@ -19,7 +19,6 @@ public class Teleop extends LinearOpMode {
         while (opModeIsActive()) {
             double intakePwr, turretPwr;
             turretPwr = 0;
-
             intakePwr = 1.0;
 
             if (gamepad1.a) {
