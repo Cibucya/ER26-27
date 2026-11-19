@@ -6,10 +6,12 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.robot.subsystems.MechanumDrive;
+import org.firstinspires.ftc.teamcode.robot.subsystems.Shooter;
 
 public class Robot {
     private HardwareMap hwMap = null;
     public MechanumDrive drive = null;
+    public Shooter shooter = null;
 
     private DcMotorEx frontShooter;
     private CRServo turretAxis, intakeLeft, intakeRight;
@@ -26,15 +28,11 @@ public class Robot {
             throw new IllegalArgumentException("Robot: Hardware map not initialized.");
         }
 
-        // TODO: change when motors are installed and driver station is set up
-        frontShooter = ahwMap.get(DcMotorEx.class, "front_shooter_drive");
         turretAxis = ahwMap.get(CRServo.class, "servo_turret_axis");
         intakeLeft = ahwMap.get(CRServo.class, "servo_intake_left");
         intakeRight = ahwMap.get(CRServo.class, "servo_intake_right");
 
 
-        // TODO: change when motors are installed
-        frontShooter.setDirection(DcMotor.Direction.FORWARD);
         turretAxis.setDirection(CRServo.Direction.FORWARD);
         intakeLeft.setDirection(DcMotor.Direction.FORWARD);
         intakeRight.setDirection(DcMotor.Direction.FORWARD);
@@ -42,12 +40,15 @@ public class Robot {
         this.hwMap = ahwMap;
 
         this.drive = new MechanumDrive();
+        this.shooter = new Shooter();
 
-        this.drive.init(hwMap);
+        this.drive.init(this.hwMap);
+        this.shooter.init(this.hwMap);
     }
 
     public void periodic() {
         this.drive.periodic();
+        this.shooter.periodic();
     }
 
     public void setPushPower(double turretPwr, double intakePwr, double shooterPwr){
