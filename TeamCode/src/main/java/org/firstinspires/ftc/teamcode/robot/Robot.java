@@ -1,7 +1,4 @@
 package org.firstinspires.ftc.teamcode.robot;
-
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.robot.subsystems.Intake;
@@ -9,7 +6,6 @@ import org.firstinspires.ftc.teamcode.robot.subsystems.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Turret;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Webcam;
-import java.util.List;
 
 public class Robot {
     private HardwareMap hwMap = null;
@@ -19,8 +15,6 @@ public class Robot {
     public Intake intake = null;
 
     public Webcam webcam = null;
-
-    private CRServo intakeLift, intakeFront;
 
     public Robot() {}
 
@@ -45,6 +39,7 @@ public class Robot {
         this.shooter.init(this.hwMap);
         this.turret.init(this.hwMap);
         this.intake.init(this.hwMap);
+        this.webcam.init(this.hwMap);
     }
 
     /**

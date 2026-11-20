@@ -36,7 +36,7 @@ public class Webcam implements Subsystem{
         this.maxTagId = max;
     }
 
-    public void updateDetecting(int minTagId, int maxTagId){
+    public void updateDetecting(){
         if ( aprilTag != null) {
             tagVisible = false;
             List<AprilTagDetection> currentDetections = aprilTag.getDetections();
