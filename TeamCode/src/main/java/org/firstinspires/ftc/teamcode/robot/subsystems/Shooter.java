@@ -16,6 +16,7 @@ public class Shooter implements Subsystem {
 
     public Shooter() {}
 
+    @Override
     public void init(HardwareMap ahwMap) {
         shooter = ahwMap.get(DcMotorEx.class, "shooter");
         shooter.setDirection(DcMotor.Direction.FORWARD);
@@ -28,6 +29,7 @@ public class Shooter implements Subsystem {
         this.state = State.SPINNING;
     }
 
+    @Override
     public void periodic() {
         if (state == State.SPINNING) {
             shooter.setPower(targetPower);
@@ -37,6 +39,7 @@ public class Shooter implements Subsystem {
         }
     }
 
+    @Override
     public void stop() {
         state = State.IDLE;
         shooter.setPower(0);
