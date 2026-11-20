@@ -12,8 +12,8 @@ public class TeleopBlue extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
-        int minTagId = 30;
-        int maxTagId = 37;
+        int minTagId = 38;
+        int maxTagId = 45;
 
         robot.webcam.setTagIdRange(minTagId, maxTagId);
         double intakePwr = 1;
