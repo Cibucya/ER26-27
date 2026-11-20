@@ -51,6 +51,7 @@ public class Robot {
     public void periodic() {
         this.drive.periodic();
         this.shooter.periodic();
+        this.turret.periodic();
     }
 
     public void setPushPower(double intakePwr){
