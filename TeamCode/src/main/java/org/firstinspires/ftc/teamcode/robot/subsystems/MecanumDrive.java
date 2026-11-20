@@ -26,8 +26,8 @@ public class MecanumDrive implements Subsystem {
     public void init(HardwareMap ahwMap) {
         frontLeft  = ahwMap.get(DcMotorEx.class, "front_left_drive");
         frontRight = ahwMap.get(DcMotorEx.class, "front_right_drive");
-        backLeft   = ahwMap.get(DcMotorEx.class, "right_left_drive");
-        backRight  = ahwMap.get(DcMotorEx.class, "right_right_drive");
+        backLeft   = ahwMap.get(DcMotorEx.class, "back_left_drive");
+        backRight  = ahwMap.get(DcMotorEx.class, "back_right_drive");
 
         // TODO: Update when tested
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
