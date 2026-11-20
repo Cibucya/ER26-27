@@ -14,7 +14,6 @@ public class Robot {
 
     private CRServo turretAxis, intakeLeft, intakeRight;
 
-
     public Robot() {}
 
     /**
@@ -29,7 +28,6 @@ public class Robot {
         turretAxis = ahwMap.get(CRServo.class, "servo_turret_axis");
         intakeLeft = ahwMap.get(CRServo.class, "servo_intake_left");
         intakeRight = ahwMap.get(CRServo.class, "servo_intake_right");
-
 
         turretAxis.setDirection(CRServo.Direction.FORWARD);
         intakeLeft.setDirection(DcMotor.Direction.FORWARD);
@@ -58,5 +56,4 @@ public class Robot {
         intakeLeft.setPower(intakePwr);
         intakeRight.setPower(intakePwr);
     }
-
 }
