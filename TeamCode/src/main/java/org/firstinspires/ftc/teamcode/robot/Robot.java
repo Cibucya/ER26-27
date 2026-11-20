@@ -53,7 +53,7 @@ public class Robot {
         this.shooter.periodic();
     }
 
-    public void setPushPower(double turretPwr, double intakePwr){
+    public void setPushPower(double intakePwr){
         intakeLeft.setPower(intakePwr);
         intakeRight.setPower(intakePwr);
     }
