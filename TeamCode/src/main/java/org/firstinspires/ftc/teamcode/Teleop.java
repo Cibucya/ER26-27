@@ -12,19 +12,16 @@ public class Teleop extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
-        double intakePwr, turretPwr;
-        turretPwr = 0;
-        intakePwr = 1.0;
+        double intakePwr = 1;
 
         waitForStart();
 
         // Control loop
         while (opModeIsActive()) {
-            if (gamepad1.a) {
-                turretPwr = 1.0;
-            } else if (gamepad1.b) {
-                turretPwr = -1.0;
-            }
+            boolean turretLeft = gamepad1.left_trigger_pressed;
+            boolean turretRight = gamepad1.right_trigger_pressed;
+            if (turretLeft == turretRight) robot.turret.stop();
+            else robot.turret.spinUp(turretLeft ? -1 : 1);
 
             double drive = gamepad1.left_stick_y;
             double strafe = -gamepad1.left_stick_x;
