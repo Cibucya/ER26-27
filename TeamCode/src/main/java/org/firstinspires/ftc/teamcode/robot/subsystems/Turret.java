@@ -38,6 +38,7 @@ public class Turret implements Subsystem {
 
     public void trackTag(double tagAngle){
         this.currentTagAngle = tagAngle;
+        this.state = State.TRACKING;
     }
     @Override
     public void periodic() {
