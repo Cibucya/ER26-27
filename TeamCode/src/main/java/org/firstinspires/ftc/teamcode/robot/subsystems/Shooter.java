@@ -16,6 +16,9 @@ public class Shooter implements Subsystem {
 
     public Shooter() {}
 
+    /**
+     * @param ahwMap The HardwareMap of the OpMode.
+     */
     @Override
     public void init(HardwareMap ahwMap) {
         shooter = ahwMap.get(DcMotorEx.class, "shooter");
@@ -29,6 +32,10 @@ public class Shooter implements Subsystem {
         this.state = State.SPINNING;
     }
 
+    /**
+     * Called once per control loop iteration
+     * Handles shooting condition and updates
+     */
     @Override
     public void periodic() {
         if (state == State.SPINNING) {
