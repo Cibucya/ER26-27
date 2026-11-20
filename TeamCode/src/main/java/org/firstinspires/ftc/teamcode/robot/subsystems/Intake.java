@@ -5,49 +5,49 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Intake implements Subsystem{
+public class Intake implements Subsystem {
 
     public enum State {
         IDLE,
         SPINNING
     }
-    private CRServo intakeLeft, intakeRight;
+    private CRServo intakeLift = null;
+    private CRServo intakeFront = null;
     private Intake.State state = Intake.State.IDLE;
-    private double power = 0;
+    private double targetPower = 0;
 
-    public Intake(){}
+    public Intake() {}
 
     @Override
-    public void init(HardwareMap ahwMap){
-        intakeLeft = ahwMap.get(CRServo.class, "servo_intake_left");
-        intakeRight = ahwMap.get(CRServo.class, "servo_intake_right");
+    public void init(HardwareMap ahwMap) {
+        intakeLift = ahwMap.get(CRServo.class, "servo_intake_lift");
+        intakeFront = ahwMap.get(CRServo.class, "servo_intake_front");
 
-        intakeLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeLift.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeFront.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        intakeLeft.setPower(0);
-        intakeRight.setPower(0);
+        intakeLift.setPower(0);
+        intakeFront.setPower(0);
     }
 
-    public void spin (double power){
-        this.power = Math.max(-1.0, Math.min(1.0, power));
+    public void spinUp(double power) {
+        this.targetPower = Math.max(-1.0, Math.min(1.0, power));
         this.state = State.SPINNING;
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
         if (state == State.SPINNING){
-            intakeLeft.setPower(power);
-            intakeRight.setPower(power);
+            intakeLift.setPower(targetPower);
+            intakeFront.setPower(targetPower);
         }
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         state = State.IDLE;
-        power = 0;
-        intakeLeft.setPower(0);
-        intakeRight.setPower(0);
+        intakeLift.setPower(0);
+        intakeFront.setPower(0);
     }
 
 }
