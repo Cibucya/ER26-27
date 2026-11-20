@@ -6,12 +6,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Turret implements Subsystem {
     public enum State {
         IDLE,
-        SPINNING
+        SPINNING,
+        TRACKING
     }
 
     private CRServo turret = null;
     private State state = State.IDLE;
     private double targetPower = 0;
+
+    private double currentTagAngle = 0.0;
 
     /**
      * @param ahwMap The Hardware Map from the OpMode
@@ -32,10 +35,27 @@ public class Turret implements Subsystem {
      * Called once per control loop iteration
      * Handles rotation and updates
      */
+
+    public void trackTag(double tagAngle){
+        this.currentTagAngle = tagAngle;
+    }
     @Override
     public void periodic() {
-        if (state == State.SPINNING) turret.setPower(targetPower);
-        else turret.setPower(0);
+        if (state == State.SPINNING) {
+            turret.setPower(targetPower);
+        }
+
+        else if (state == State.TRACKING) {
+            double Kp = 0.02;
+            double autoPower = Kp * currentTagAngle;
+            autoPower = Math.max(-1.0, (Math.min(1.0, autoPower)));
+
+            if (Math.abs(currentTagAngle) < 2.0){
+                autoPower = 0;
+            }
+            turret.setPower(autoPower);
+
+        } else turret.setPower(0);
     }
 
     @Override
