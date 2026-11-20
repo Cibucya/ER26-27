@@ -12,6 +12,7 @@ public class Teleop extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
+        robot.shooter.setShootPower(1);
 
         waitForStart();
 
@@ -27,7 +28,7 @@ public class Teleop extends LinearOpMode {
                 turretPwr = -1.0;
 
             } else if (gamepad1.x) {
-                robot.shooter.setShootPower(1);
+                robot.shooter.start();
             }
             robot.setPushPower(turretPwr, intakePwr);
 
