@@ -26,7 +26,11 @@ public class Teleop extends LinearOpMode {
                 turretPwr = -1.0;
             }
 
-            // Shooter
+            double drive = gamepad1.left_stick_y;
+            double strafe = gamepad1.left_stick_x;
+            double twist = gamepad1.right_stick_x;
+            robot.drive.setDriveInputs(drive, strafe, twist);
+
             if (gamepad1.x) robot.shooter.spinUp(1);
             else robot.shooter.stop();
 
