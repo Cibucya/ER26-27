@@ -27,7 +27,7 @@ public class Shooter implements Subsystem {
         shooter.setPower(0);
     }
 
-    public void spin(double power) {
+    public void spinUp(double power) {
         this.targetPower = Math.max(-1.0, Math.min(1.0, power));
         this.state = State.SPINNING;
     }
