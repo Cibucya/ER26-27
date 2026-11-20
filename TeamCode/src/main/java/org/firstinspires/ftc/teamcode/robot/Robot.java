@@ -8,6 +8,8 @@ import org.firstinspires.ftc.teamcode.robot.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.robot.subsystems.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Turret;
+import org.firstinspires.ftc.teamcode.robot.subsystems.Webcam;
+import java.util.List;
 
 public class Robot {
     private HardwareMap hwMap = null;
@@ -16,7 +18,9 @@ public class Robot {
     public Turret turret = null;
     public Intake intake = null;
 
-    private CRServo intakeLeft, intakeRight;
+    public Webcam webcam = null;
+
+    private CRServo intakeLift, intakeFront;
 
     public Robot() {}
 
@@ -35,6 +39,7 @@ public class Robot {
         this.shooter = new Shooter();
         this.turret = new Turret();
         this.intake = new Intake();
+        this.webcam = new Webcam();
 
         this.drive.init(this.hwMap);
         this.shooter.init(this.hwMap);
@@ -51,6 +56,7 @@ public class Robot {
         this.shooter.periodic();
         this.turret.periodic();
         this.intake.periodic();
+        this.webcam.periodic();
     }
 
 }
