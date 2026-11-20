@@ -18,8 +18,8 @@ public class Webcam implements Subsystem{
     private double tagDistance = 0.0;
     private boolean tagVisible = false;
 
-    private int minTagId = 30;
-    private int maxTagId = 37;
+    private int minTagId = 0;
+    private int maxTagId = 50;
 
     public Webcam(){}
 
@@ -29,6 +29,11 @@ public class Webcam implements Subsystem{
 
         visionPortal = new VisionPortal.Builder().setCamera(ahwMap.get(WebcamName.class, "Webcam"))
                 .addProcessor(aprilTag).build();
+    }
+
+    public void setTagIdRange(int min, int max){
+        this.minTagId = min;
+        this.maxTagId = max;
     }
 
     public void updateDetecting(int minTagId, int maxTagId){
