@@ -10,9 +10,12 @@ public class Shooter implements Subsystem {
         SPINNING
     }
 
-    private DcMotorEx shooter = null;
-    private State state = State.IDLE;
-    private double targetPower = 0;
+    private DcMotorEx shooterPollen = null;
+    private DcMotorEx shooterNectar = null;
+    private State statePollen = State.IDLE;
+    private State stateNectar = State.IDLE;
+    private double targetPowerPollen = 0;
+    private double targetPowerNectar = 0;
 
     public Shooter() {}
 
@@ -21,15 +24,25 @@ public class Shooter implements Subsystem {
      */
     @Override
     public void init(HardwareMap ahwMap) {
-        shooter = ahwMap.get(DcMotorEx.class, "shooter");
-        shooter.setDirection(DcMotor.Direction.FORWARD);
-        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        shooter.setPower(0);
+        shooterPollen = ahwMap.get(DcMotorEx.class, "shooter_pollen");
+        shooterNectar = ahwMap.get(DcMotorEx.class, "shooter_nectar");
+
+        shooterPollen.setDirection(DcMotor.Direction.FORWARD);
+        shooterNectar.setDirection(DcMotor.Direction.FORWARD);
+
+        shooterPollen.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        shooterNectar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        shooterPollen.setPower(0);
+        shooterNectar.setPower(0);
     }
 
     public void spinUp(double power) {
-        this.targetPower = Math.max(-1.0, Math.min(1.0, power));
-        this.state = State.SPINNING;
+        power = Math.max(-1.0, Math.min(1.0, power));
+        this.targetPowerPollen = power;
+        this.targetPowerNectar = power;
+        this.statePollen = State.SPINNING;
+        this.stateNectar = State.SPINNING;
     }
 
     /**
@@ -38,17 +51,18 @@ public class Shooter implements Subsystem {
      */
     @Override
     public void periodic() {
-        if (state == State.SPINNING) {
-            shooter.setPower(targetPower);
-        }
-        else {
-            shooter.setPower(0);
-        }
+        if (statePollen == State.SPINNING) shooterPollen.setPower(targetPowerPollen);
+        else shooterPollen.setPower(0);
+
+        if (stateNectar == State.SPINNING) shooterNectar.setPower(targetPowerNectar);
+        else shooterNectar.setPower(0);
     }
 
     @Override
     public void stop() {
-        state = State.IDLE;
-        shooter.setPower(0);
+        statePollen = State.IDLE;
+        stateNectar = State.IDLE;
+        shooterPollen.setPower(0);
+        shooterNectar.setPower(0);
     }
 }
