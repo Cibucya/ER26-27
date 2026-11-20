@@ -4,10 +4,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Shooter {
+public class Shooter implements Subsystem {
+    public enum State {
+        IDLE,
+        SPINNING
+    }
+
     private DcMotorEx shooter = null;
-    private double shootPower = 0;
-    private boolean isShooting = false;
+    private State state = State.IDLE;
+    private double targetPower = 0;
 
     public Shooter() {}
 
@@ -15,35 +20,25 @@ public class Shooter {
         shooter = ahwMap.get(DcMotorEx.class, "shooter");
         shooter.setDirection(DcMotor.Direction.FORWARD);
         shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        this.reset();
+        shooter.setPower(0);
+    }
+
+    public void spin(double power) {
+        this.targetPower = Math.max(-1.0, Math.min(1.0, power));
+        this.state = State.SPINNING;
     }
 
     public void periodic() {
-        if (isShooting) {
-            this.setPower(shootPower);
+        if (state == State.SPINNING) {
+            shooter.setPower(targetPower);
         }
         else {
-            this.setPower(0);
+            shooter.setPower(0);
         }
-    }
-
-    public void start() {
-        isShooting = true;
     }
 
     public void stop() {
-        isShooting = false;
-    }
-
-    public void setShootPower(double power) {
-        shootPower = power > 1 ? 1 : power;
-    }
-
-    public void setPower(double power) {
-        shooter.setPower(power);
-    }
-
-    public void reset() {
-        shooter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        state = State.IDLE;
+        shooter.setPower(0);
     }
 }
