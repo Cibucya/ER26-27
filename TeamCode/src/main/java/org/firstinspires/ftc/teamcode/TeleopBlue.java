@@ -26,8 +26,8 @@ public class TeleopBlue extends LinearOpMode {
             boolean turretLeft = gamepad1.left_trigger_pressed;
             boolean turretRight = gamepad1.right_trigger_pressed;
 
-            if (gamepad1.y && robot.webcam.isTagVisible()) robot.turret.trackTag(robot.webcam.getTagAngle());
-            else if (turretLeft == turretRight) robot.turret.stop();
+            if (gamepad1.y && robot.webcam.isTagVisible()) robot.turret.startTracking();
+            else if (turretLeft == turretRight) robot.turret.stopTracking();
             else robot.turret.spinUp(turretLeft ? -1 : 1);
 
             double drive = gamepad1.left_stick_y;

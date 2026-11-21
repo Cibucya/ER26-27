@@ -53,11 +53,6 @@ public class Turret implements Subsystem {
      * Called once per control loop iteration
      * Handles rotation and updates
      */
-    public void trackTag(double tagAngle){
-        this.currentTagAngle = tagAngle;
-        this.state = State.TRACKING;
-    }
-
     @Override
     public void periodic() {
         if (state == State.SPINNING) {
@@ -65,16 +60,22 @@ public class Turret implements Subsystem {
         }
 
         else if (state == State.TRACKING) {
-            // Kp Scales the motor power based on the angular error distance to the target
-            // A higher Kp makes the turret snap faster, while too high causes oscillation
-            double Kp = 0.02;
-            double autoPower = Kp * currentTagAngle;
-            autoPower = Math.max(-1.0, (Math.min(1.0, autoPower)));
+            if (webcam != null && webcam.isTagVisible()){
+                double currentTagAngle = webcam.getTagAngle();
 
-            if (Math.abs(currentTagAngle) < 2.0){
-                autoPower = 0;
+                // Kp Scales the motor power based on the angular error distance to the target
+                // A higher Kp makes the turret snap faster, while too high causes oscillation
+                double Kp = 0.02;
+                double autoPower = Kp * currentTagAngle;
+                autoPower = Math.max(-1.0, (Math.min(1.0, autoPower)));
+
+                if (Math.abs(currentTagAngle) < 2.0){
+                    autoPower = 0;
+                } else {
+                    turret.setPower(0);
+                }
+                turret.setPower(autoPower);
             }
-            turret.setPower(autoPower);
         } else turret.setPower(0);
     }
 
