@@ -93,6 +93,13 @@ public class MecanumDrive implements Subsystem {
         backRight.setZeroPowerBehavior(behavior);
     }
 
+    private void setRunMode(DcMotor.RunMode mode) {
+        frontLeft.setMode(mode);
+        frontRight.setMode(mode);
+        backLeft.setMode(mode);
+        backRight.setMode(mode);
+    }
+
     /**
      * Converts drive, strafe, and twist values to motor outputs
      * @param drive  front and back
