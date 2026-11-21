@@ -4,19 +4,30 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.robot.subsystems.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.robot.subsystems.Subsystem;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Turret;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Webcam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Robot {
+    private final List<Subsystem> subsystems = new ArrayList<>();
+
     private HardwareMap hwMap = null;
-    public MecanumDrive drive = null;
-    public Shooter shooter = null;
-    public Turret turret = null;
-    public Intake intake = null;
+    public MecanumDrive drive = new MecanumDrive();
+    public Shooter shooter = new Shooter();
+    public Turret turret = new Turret();
+    public Intake intake = new Intake();
+    public Webcam webcam = new Webcam();
 
-    public Webcam webcam = null;
-
-    public Robot() {}
+    public Robot() {
+        subsystems.add(drive);
+        subsystems.add(shooter);
+        subsystems.add(turret);
+        subsystems.add(intake);
+        subsystems.add(webcam);
+    }
 
     /**
      * Initialize the robot hardware.
@@ -29,19 +40,10 @@ public class Robot {
 
         this.hwMap = ahwMap;
 
-        this.drive = new MecanumDrive();
-        this.shooter = new Shooter();
-        this.turret = new Turret();
-        this.intake = new Intake();
-        this.webcam = new Webcam();
-
-        this.drive.init(this.hwMap);
-        this.shooter.init(this.hwMap);
-        this.turret.init(this.hwMap);
-        this.intake.init(this.hwMap);
-        this.webcam.init(this.hwMap);
-
-        this.turret.setWebcam(this.webcam);
+        for (Subsystem subsystem : subsystems) {
+            subsystem.init(hwMap);
+        }
+        turret.setWebcam(this.webcam);
     }
 
     /**
@@ -49,11 +51,14 @@ public class Robot {
      * Handles robot behaviour and updates
      */
     public void periodic() {
-        this.drive.periodic();
-        this.shooter.periodic();
-        this.turret.periodic();
-        this.intake.periodic();
-        this.webcam.periodic();
+        for (Subsystem subsystem : subsystems) {
+            subsystem.periodic();
+        }
     }
 
+    public void stop() {
+        for (Subsystem subsystem : subsystems) {
+            subsystem.stop();
+        }
+    }
 }
