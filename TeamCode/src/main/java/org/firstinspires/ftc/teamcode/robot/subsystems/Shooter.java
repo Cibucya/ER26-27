@@ -37,12 +37,19 @@ public class Shooter implements Subsystem {
         shooterNectar.setPower(0);
     }
 
-    public void spinUp(double power) {
-        power = Math.max(-1.0, Math.min(1.0, power));
-        this.targetPowerPollen = power;
-        this.targetPowerNectar = power;
+    public void spinUpPollen(double power) {
+        this.targetPowerPollen = Math.max(-1.0, Math.min(1.0, power));
         this.statePollen = State.SPINNING;
+    }
+
+    public void spinUpNectar(double power) {
+        this.targetPowerNectar = Math.max(-1.0, Math.min(1.0, power));
         this.stateNectar = State.SPINNING;
+    }
+
+    public void spinUp(double power) {
+        spinUpPollen(power);
+        spinUpNectar(power);
     }
 
     /**
@@ -58,11 +65,19 @@ public class Shooter implements Subsystem {
         else shooterNectar.setPower(0);
     }
 
+    public void stopPollen() {
+        statePollen = State.IDLE;
+        shooterPollen.setPower(0);
+    }
+
+    public void stopNectar() {
+        stateNectar = State.IDLE;
+        shooterNectar.setPower(0);
+    }
+
     @Override
     public void stop() {
-        statePollen = State.IDLE;
-        stateNectar = State.IDLE;
-        shooterPollen.setPower(0);
-        shooterNectar.setPower(0);
+        stopPollen();
+        stopNectar();
     }
 }
