@@ -5,8 +5,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MecanumDrive implements Subsystem {
-    // Drive motors
+    private final List<DcMotorEx> motors = new ArrayList<>();
+
     private DcMotorEx frontLeft  = null;
     private DcMotorEx frontRight = null;
     private DcMotorEx backLeft   = null;
@@ -28,6 +32,9 @@ public class MecanumDrive implements Subsystem {
         frontRight = ahwMap.get(DcMotorEx.class, "front_right_drive");
         backLeft   = ahwMap.get(DcMotorEx.class, "back_left_drive");
         backRight  = ahwMap.get(DcMotorEx.class, "back_right_drive");
+
+        motors.clear();
+        motors.addAll(List.of(frontLeft, frontRight, backLeft, backRight));
 
         // TODO: Update when tested
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
@@ -68,36 +75,22 @@ public class MecanumDrive implements Subsystem {
         driveInput = 0;
         strafeInput = 0;
         twistInput = 0;
-        frontLeft.setPower(0);
-        frontRight.setPower(0);
-        backLeft.setPower(0);
-        backRight.setPower(0);
+        for (DcMotorEx motor : motors) motor.setPower(0);
     }
 
     public void resetEncoders() {
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        for (DcMotorEx motor : motors) {
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
     }
 
     private void setBrakeMode(DcMotor.ZeroPowerBehavior behavior) {
-        frontLeft.setZeroPowerBehavior(behavior);
-        frontRight.setZeroPowerBehavior(behavior);
-        backLeft.setZeroPowerBehavior(behavior);
-        backRight.setZeroPowerBehavior(behavior);
+        for (DcMotorEx motor : motors) motor.setZeroPowerBehavior(behavior);
     }
 
     private void setRunMode(DcMotor.RunMode mode) {
-        frontLeft.setMode(mode);
-        frontRight.setMode(mode);
-        backLeft.setMode(mode);
-        backRight.setMode(mode);
+        for (DcMotorEx motor : motors) motor.setMode(mode);
     }
 
     /**
@@ -121,14 +114,11 @@ public class MecanumDrive implements Subsystem {
         }
 
         if (max > 1) {
-            for (int i = 0; i < speeds.length; ++i) {
+            for (int i = 0; i < speeds.length; ++i)
                 speeds[i] /= max;
-            }
         }
 
-        frontLeft.setPower(speeds[0]);
-        frontRight.setPower(speeds[1]);
-        backLeft.setPower(speeds[2]);
-        backRight.setPower(speeds[3]);
+        for (int i = 0; i < motors.size() && i < speeds.length; ++i)
+            motors.get(i).setPower(speeds[i]);
     }
 }
