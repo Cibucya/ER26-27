@@ -43,7 +43,6 @@ public class Robot {
         for (Subsystem subsystem : subsystems) {
             subsystem.init(hwMap);
         }
-
         turret.setWebcam(this.webcam);
     }
 
