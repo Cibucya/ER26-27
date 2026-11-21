@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.robot.subsystems;
 
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Intake implements Subsystem {
 
@@ -11,8 +13,9 @@ public class Intake implements Subsystem {
         IDLE,
         SPINNING
     }
-    private CRServo intakeLift = null;
-    private CRServo intakeFront = null;
+    private ArrayList<DcMotorEx> motors = new ArrayList<>();
+    private DcMotorEx liftMotor = null;
+    private DcMotorEx frontMotor = null;
     private Intake.State state = Intake.State.IDLE;
     private double targetPower = 0;
 
@@ -20,14 +23,16 @@ public class Intake implements Subsystem {
 
     @Override
     public void init(HardwareMap ahwMap) {
-        intakeLift = ahwMap.get(CRServo.class, "servo_intake_lift");
-        intakeFront = ahwMap.get(CRServo.class, "servo_intake_front");
+        liftMotor = ahwMap.get(DcMotorEx.class, "servo_intake_lift");
+        frontMotor = ahwMap.get(DcMotorEx.class, "servo_intake_front");
+        
+        motors.clear();
+        motors.addAll(List.of(liftMotor, frontMotor));
 
-        intakeLift.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        intakeLift.setPower(0);
-        intakeFront.setPower(0);
+        for (DcMotorEx motor : motors) motor.setPower(0);
     }
 
     public void spinUp(double power) {
@@ -38,16 +43,13 @@ public class Intake implements Subsystem {
     @Override
     public void periodic() {
         if (state == State.SPINNING){
-            intakeLift.setPower(targetPower);
-            intakeFront.setPower(targetPower);
+            for (DcMotorEx motor : motors) motor.setPower(targetPower);
         }
     }
 
     @Override
     public void stop() {
         state = State.IDLE;
-        intakeLift.setPower(0);
-        intakeFront.setPower(0);
+        for (DcMotorEx motor : motors) motor.setPower(0);
     }
-
 }
