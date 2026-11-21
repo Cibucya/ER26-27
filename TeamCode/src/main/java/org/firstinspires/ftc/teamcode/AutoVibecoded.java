@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 public class AutoVibecoded extends LinearOpMode {
 
     // Tune these two values on the field so the robot clears the starting line cleanly
-    private static final double DRIVE_POWER = 0.45;
+    private static final double DRIVE_POWER = -0.45;
     private static final double DRIVE_SECONDS = 1.2;
 
     @Override
