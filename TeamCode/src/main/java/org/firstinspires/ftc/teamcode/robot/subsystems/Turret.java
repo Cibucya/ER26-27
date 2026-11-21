@@ -28,7 +28,6 @@ public class Turret implements Subsystem {
         this.state = State.IDLE;
         turret .setPower(0);
     }
-    private double currentTagAngle = 0.0;
 
     // TODO: implement startTracking() and stopTracking()
     // I also thing that this thing might not work since we are not counting for the servo gear ratio, speed, etc.
@@ -66,7 +65,8 @@ public class Turret implements Subsystem {
         }
 
         else if (state == State.TRACKING) {
-            // TODO: add comment explaining whats Kp
+            // Kp Scales the motor power based on the angular error distance to the target
+            // A higher Kp makes the turret snap faster, while too high causes oscillation
             double Kp = 0.02;
             double autoPower = Kp * currentTagAngle;
             autoPower = Math.max(-1.0, (Math.min(1.0, autoPower)));
