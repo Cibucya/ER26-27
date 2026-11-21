@@ -23,11 +23,17 @@ public class TeleopGeneral extends LinearOpMode {
             double twist = -gamepad1.right_stick_x;
             robot.drive.setDriveInputs(drive, strafe, twist);
 
-            if (gamepad1.x) robot.shooter.spinUp(intakePwr);
-            else if (gamepad1.y) robot.shooter.spinUp(-intakePwr);
-            else robot.shooter.stop();
+            double pollenPower = gamepad1.left_trigger;
+            double nectarPower = gamepad1.right_trigger;
+            if (pollenPower > 0) robot.shooter.spinUpPollen(pollenPower);
+            else robot.shooter.stopNectar();
+            if (nectarPower > 0) robot.shooter.spinUpNectar(nectarPower);
+            else robot.shooter.stopPollen();
 
-            robot.intake.spinUp(1.0);
+            if (gamepad1.x) robot.intake.spinUp(1.0);
+            else if (gamepad1.y) robot.intake.spinUp(-1.0);
+            else robot.intake.stop();
+
             robot.periodic();
         }
     }
