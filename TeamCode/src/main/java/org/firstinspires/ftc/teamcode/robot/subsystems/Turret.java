@@ -13,10 +13,9 @@ public class Turret implements Subsystem {
     private CRServo turret = null;
     private State state = State.IDLE;
     private double targetPower = 0;
-    // TODO: instead of this, create a camera instance in this class. make this variable availabre in camera class.
     private Webcam webcam = null;
 
-    public void setWebcam(Webcam webcam){
+    public void setWebcam(Webcam webcam) {
         this.webcam = webcam;
     }
 
@@ -24,15 +23,10 @@ public class Turret implements Subsystem {
         this.state = State.TRACKING;
     }
 
-    public void stopTracking(){
+    public void stopTracking() {
         this.state = State.IDLE;
-        turret .setPower(0);
+        turret.setPower(0);
     }
-
-    // TODO: implement startTracking() and stopTracking()
-    // I also thing that this thing might not work since we are not counting for the servo gear ratio, speed, etc.
-    // Thus, we will have a giant offset. We will see when the turret will be ready tomorrow and test it.
-    // Maybe we won't use auto decetion. Just fix all the todo's which I've mentioned.
 
     /**
      * @param ahwMap The Hardware Map from the OpMode
