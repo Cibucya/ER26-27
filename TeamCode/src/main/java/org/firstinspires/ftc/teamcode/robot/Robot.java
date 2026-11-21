@@ -40,6 +40,8 @@ public class Robot {
         this.turret.init(this.hwMap);
         this.intake.init(this.hwMap);
         this.webcam.init(this.hwMap);
+
+        this.turret.setWebcam(this.webcam);
     }
 
     /**
