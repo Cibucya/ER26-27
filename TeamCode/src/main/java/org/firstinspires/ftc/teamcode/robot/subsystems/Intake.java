@@ -13,7 +13,9 @@ public class Intake implements Subsystem {
         IDLE,
         SPINNING
     }
+
     private ArrayList<DcMotorEx> motors = new ArrayList<>();
+
     private DcMotorEx liftMotor = null;
     private DcMotorEx frontMotor = null;
     private Intake.State state = Intake.State.IDLE;
