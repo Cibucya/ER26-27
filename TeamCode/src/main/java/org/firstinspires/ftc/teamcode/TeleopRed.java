@@ -5,22 +5,29 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
-@TeleOp
-public class Teleop extends LinearOpMode {
+@TeleOp(name = "TeleopRed")
+public class TeleopRed extends LinearOpMode {
     Robot robot = new Robot();
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
+        int minTagId = 30;
+        int maxTagId = 37;
+
+        robot.webcam.setTagIdRange(minTagId, maxTagId);
         double intakePwr = 1;
 
         waitForStart();
 
         // Control loop
         while (opModeIsActive()) {
-            boolean turretLeft = false;
-            boolean turretRight = false;
-            if (turretLeft == turretRight) robot.turret.stop();
+            robot.webcam.updateDetecting();
+            boolean turretLeft = gamepad1.left_trigger_pressed;
+            boolean turretRight = gamepad1.right_trigger_pressed;
+
+            if (gamepad1.y && robot.webcam.isTagVisible()) robot.turret.startTracking();
+            else if (turretLeft == turretRight) robot.turret.stopTracking();
             else robot.turret.spinUp(turretLeft ? -1 : 1);
 
             double drive = gamepad1.left_stick_y;
@@ -31,7 +38,7 @@ public class Teleop extends LinearOpMode {
             if (gamepad1.left_trigger > 0) robot.shooter.spinUp(gamepad1.left_trigger);
             else robot.shooter.stop();
 
-            robot.setPushPower(intakePwr);
+            robot.intake.spinUp(1.0);
             robot.periodic();
         }
     }
