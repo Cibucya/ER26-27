@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.robot.subsystems;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Turret implements Subsystem {
     public enum State {
@@ -14,6 +15,10 @@ public class Turret implements Subsystem {
     private State state = State.IDLE;
     private double targetPower = 0;
     private Webcam webcam = null;
+
+    private double virtualPosition = 0.0;
+    private final double MAX_TIME_LIMIT = 1.5;
+    private ElapsedTime loopTimer = new ElapsedTime():
 
     public void setWebcam(Webcam webcam) {
         this.webcam = webcam;
@@ -36,6 +41,7 @@ public class Turret implements Subsystem {
         turret = ahwMap.get(CRServo.class, "turret");
         turret.setDirection(CRServo.Direction.FORWARD);
         turret.setPower(0);
+        loopTimer.reset();
     }
 
     public void spinUp(double power) {
@@ -49,6 +55,10 @@ public class Turret implements Subsystem {
      */
     @Override
     public void periodic() {
+        // dt calculates the seconds passed since the last loop iteration
+        double dt = loopTimer.seconds();
+        loopTimer.reset();
+
         if (state == State.SPINNING) {
             turret.setPower(targetPower);
         }
@@ -71,6 +81,18 @@ public class Turret implements Subsystem {
                 turret.setPower(autoPower);
             }
         } else turret.setPower(0);
+
+        virtualPosition += autoPower * dt;
+
+        if (virtualPosition > MAX_TIME_LIMIT) {
+            virtualPosition = MAX_TIME_LIMIT;
+            if (autoPower > 0) appliedPower = 0;
+        } else if (virtualPosition < -MAX_TIME_LIMIT) {
+            virtualPosition = -MAX_TIME_LIMIT;
+            if (autoPower < 0); autoPower = 0;
+
+        }
+        turret.setPower(autoPower);
     }
 
     @Override
