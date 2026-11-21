@@ -5,42 +5,38 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class MechanumDrive {
+public class MecanumDrive implements Subsystem {
     // Drive motors
     private DcMotorEx frontLeft  = null;
     private DcMotorEx frontRight = null;
     private DcMotorEx backLeft   = null;
     private DcMotorEx backRight  = null;
 
-    private double driveInput = 0;
+    private double driveInput =  0;
     private double strafeInput = 0;
-    private double twistInput = 0;
+    private double twistInput =  0;
 
-    public MechanumDrive() {}
+    public MecanumDrive() {}
 
     /**
      * Initializes the base motors.
      * @param ahwMap The HardwareMap from the OpMode.
      */
+    @Override
     public void init(HardwareMap ahwMap) {
-        // TODO: change when motors are installed and driver station is set up
         frontLeft  = ahwMap.get(DcMotorEx.class, "front_left_drive");
         frontRight = ahwMap.get(DcMotorEx.class, "front_right_drive");
-        backLeft   = ahwMap.get(DcMotorEx.class, "right_left_drive");
-        backRight  = ahwMap.get(DcMotorEx.class, "right_right_drive");
+        backLeft   = ahwMap.get(DcMotorEx.class, "back_left_drive");
+        backRight  = ahwMap.get(DcMotorEx.class, "back_right_drive");
 
-        // TODO: change when motors are installed
+        // TODO: Update when tested
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.FORWARD);
 
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        reset();
+        setBrakeMode(DcMotor.ZeroPowerBehavior.BRAKE);
+        resetEncoders();
     }
 
     /**
@@ -59,8 +55,42 @@ public class MechanumDrive {
      * Called once per control loop iteration
      * Handles drive-related calculations and updates
      */
+    @Override
     public void periodic() {
-        this.drive(driveInput, strafeInput, twistInput);
+        applyMecanumPower(driveInput, strafeInput, twistInput);
+    }
+
+    /**
+     * Resets drive inputs and stops the robot
+     */
+    @Override
+    public void stop() {
+        driveInput = 0;
+        strafeInput = 0;
+        twistInput = 0;
+        frontLeft.setPower(0);
+        frontRight.setPower(0);
+        backLeft.setPower(0);
+        backRight.setPower(0);
+    }
+
+    public void resetEncoders() {
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    private void setBrakeMode(DcMotor.ZeroPowerBehavior behavior) {
+        frontLeft.setZeroPowerBehavior(behavior);
+        frontRight.setZeroPowerBehavior(behavior);
+        backLeft.setZeroPowerBehavior(behavior);
+        backRight.setZeroPowerBehavior(behavior);
     }
 
     /**
@@ -69,7 +99,7 @@ public class MechanumDrive {
      * @param strafe left and right
      * @param twist  rotating the whole chassis
      */
-    void drive(double drive, double strafe, double twist) {
+    void applyMecanumPower(double drive, double strafe, double twist) {
         double[] speeds = {
                 (drive + strafe + twist),
                 (drive - strafe - twist),
@@ -93,15 +123,5 @@ public class MechanumDrive {
         frontRight.setPower(speeds[1]);
         backLeft.setPower(speeds[2]);
         backRight.setPower(speeds[3]);
-    }
-
-    /**
-     * Resets encoders
-     */
-    public void reset() {
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
