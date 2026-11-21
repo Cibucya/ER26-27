@@ -18,8 +18,8 @@ public class Teleop extends LinearOpMode {
 
         // Control loop
         while (opModeIsActive()) {
-            boolean turretLeft = gamepad1.left_trigger_pressed;
-            boolean turretRight = gamepad1.right_trigger_pressed;
+            boolean turretLeft = false;
+            boolean turretRight = false;
             if (turretLeft == turretRight) robot.turret.stop();
             else robot.turret.spinUp(turretLeft ? -1 : 1);
 
@@ -28,7 +28,7 @@ public class Teleop extends LinearOpMode {
             double twist = -gamepad1.right_stick_x;
             robot.drive.setDriveInputs(drive, strafe, twist);
 
-            if (gamepad1.x) robot.shooter.spinUp(1);
+            if (gamepad1.left_trigger > 0) robot.shooter.spinUp(gamepad1.left_trigger);
             else robot.shooter.stop();
 
             robot.setPushPower(intakePwr);
