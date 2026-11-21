@@ -18,11 +18,6 @@ public class TeleopGeneral extends LinearOpMode {
 
         // Control loop
         while (opModeIsActive()) {
-            boolean turretLeft = gamepad1.left_trigger_pressed;
-            boolean turretRight = gamepad1.right_trigger_pressed;
-            if (turretLeft == turretRight) robot.turret.stopTracking();
-            else robot.turret.spinUp(turretLeft ? -1 : 1);
-
             double drive = gamepad1.left_stick_y;
             double strafe = -gamepad1.left_stick_x;
             double twist = -gamepad1.right_stick_x;
