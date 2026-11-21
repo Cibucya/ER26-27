@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.robot.subsystems;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Turret implements Subsystem {
     public enum State {
@@ -15,6 +16,11 @@ public class Turret implements Subsystem {
     private double targetPower = 0;
     private Webcam webcam = null;
 
+    private double virtualPosition = 0.0;
+    private final double MAX_TIME_LIMIT = 1.5;
+    private final double limitPower = 0.0;
+    private final ElapsedTime loopTimer = new ElapsedTime();
+
     public void setWebcam(Webcam webcam) {
         this.webcam = webcam;
     }
@@ -26,6 +32,7 @@ public class Turret implements Subsystem {
     public void stopTracking() {
         this.state = State.IDLE;
         turret.setPower(0);
+        targetPower = 0;
     }
 
     /**
@@ -36,6 +43,7 @@ public class Turret implements Subsystem {
         turret = ahwMap.get(CRServo.class, "turret");
         turret.setDirection(CRServo.Direction.FORWARD);
         turret.setPower(0);
+        loopTimer.reset();
     }
 
     public void spinUp(double power) {
@@ -49,8 +57,13 @@ public class Turret implements Subsystem {
      */
     @Override
     public void periodic() {
+        // dt calculates the seconds passed since the last loop iteration
+        double dt = loopTimer.seconds();
+        loopTimer.reset();
+        double autoPower = 0.0;
+
         if (state == State.SPINNING) {
-            turret.setPower(targetPower);
+            autoPower = targetPower;
         }
 
         else if (state == State.TRACKING) {
@@ -60,7 +73,7 @@ public class Turret implements Subsystem {
                 // Kp Scales the motor power based on the angular error distance to the target
                 // A higher Kp makes the turret snap faster, while too high causes oscillation
                 double Kp = 0.02;
-                double autoPower = Kp * currentTagAngle;
+                autoPower = Kp * currentTagAngle;
                 autoPower = Math.max(-1.0, (Math.min(1.0, autoPower)));
 
                 if (Math.abs(currentTagAngle) < 2.0){
@@ -68,9 +81,20 @@ public class Turret implements Subsystem {
                 } else {
                     turret.setPower(0);
                 }
-                turret.setPower(autoPower);
             }
-        } else turret.setPower(0);
+        } else autoPower = 0.0;
+
+        virtualPosition += autoPower * dt;
+
+        if (virtualPosition > MAX_TIME_LIMIT) {
+            virtualPosition = MAX_TIME_LIMIT;
+            if (autoPower > 0) autoPower = limitPower;
+        } else if (virtualPosition < -MAX_TIME_LIMIT) {
+            virtualPosition = -MAX_TIME_LIMIT;
+            if (autoPower < 0) autoPower = limitPower;
+
+        }
+        turret.setPower(autoPower);
     }
 
     @Override

@@ -24,6 +24,7 @@ public class TeleopGeneral extends LinearOpMode {
             robot.drive.setDriveInputs(drive, strafe, twist);
 
             if (gamepad1.x) robot.shooter.spinUp(intakePwr);
+            else if (gamepad1.y) robot.shooter.spinUp(-intakePwr);
             else robot.shooter.stop();
 
             robot.intake.spinUp(1.0);
